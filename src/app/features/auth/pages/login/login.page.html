@@ -1,0 +1,15 @@
+<div class="w-full h-screen flex items-center justify-center">
+  <img src="../../../../../assets/images.png" alt="Logo">
+  <form (ngSubmit)="onSubmit()" class="flex flex-col justify-center 
+  items-center border p-20 gap-5 shadow max-w-md mx-auto">
+    <h2 class="text-3xl">Sign In</h2>
+    
+    <app-input type="text" placeholder="Email" variant="primary"></app-input>
+    <app-input type="password" placeholder="Password" variant="primary"></app-input>
+    
+    <app-button type="submit" variant="primary">Login</app-button>
+    
+    <p>Don't have an account? <a routerLink="../register" class="underline text-blue-500">Register</a></p>
+    <p>Forgot your password? <a routerLink="../reset-password" class="underline text-blue-500">Reset Password</a></p>
+  </form>
+</div>

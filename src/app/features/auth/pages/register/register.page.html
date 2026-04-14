@@ -1,0 +1,13 @@
+<div class="w-full h-screen flex items-center justify-center">
+  <form (ngSubmit)="onRegister()" class="flex flex-col justify-center 
+  items-center border p-20 gap-5 shadow max-w-md mx-auto">
+    <h2 class="text-3xl">Register</h2>
+    
+    <input id="email" placeholder="Email" class="text-center border-b-2" />
+    <input id="password" type="password" placeholder="Password" class="text-center border-b-2" />
+    
+    <app-button type="submit" variant="primary">Register</app-button>
+    
+    <p>Already have an account? <a routerLink="../login" class="underline text-blue-500">Login</a></p>
+  </form>
+</div>
