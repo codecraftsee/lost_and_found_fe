@@ -8,7 +8,13 @@
   "projects": {
     "LostAndFound": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+          "@schematics/angular:component": {
+            "style": "none",
+            "standalone": true,
+            "skipTests": true
+          }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
