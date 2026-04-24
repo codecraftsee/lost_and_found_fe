@@ -2,13 +2,20 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": false
   },
   "newProjectRoot": "projects",
   "projects": {
     "LostAndFound": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+          "@schematics/angular:component": {
+            "style": "none",
+            "standalone": true,
+            "skipTests": true
+          }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
