@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface RegisterRequest {
-  fullName: string;
+  full_name: string;
   email: string;
   password: string;
 }
@@ -11,6 +11,11 @@ export interface RegisterRequest {
 export interface LoginRequest {
   email: string;
   password: string;
+}
+
+export interface ChangePasswordRequest {
+  current_password: string;
+  new_password: string;
 }
 
 export interface AuthResponse {
@@ -32,6 +37,10 @@ export class AuthService {
 
   login(data: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.api}/login`, data);
+  }
+
+  changePassword(data: ChangePasswordRequest): Observable<any> {
+    return this.http.post(`${this.api}/change-password`, data);
   }
 
   saveToken(token: string): void {
