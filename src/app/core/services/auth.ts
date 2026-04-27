@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 export interface RegisterRequest {
   full_name: string;
@@ -35,8 +35,15 @@ export class AuthService {
     return this.http.post(`${this.api}/register`, data);
   }
 
-  login(data: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.api}/login`, data);
+  login(data: LoginRequest): Observable<any> {
+    return this.http.post<{ access_token: string }>(
+      `${this.api}/login`,
+      data
+    ).pipe(
+      tap((res) => {
+        localStorage.setItem('access_token', res.access_token);
+      })
+    );
   }
 
   changePassword(data: ChangePasswordRequest): Observable<any> {

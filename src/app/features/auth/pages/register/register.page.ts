@@ -17,7 +17,7 @@ export class RegisterPage {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    /* private router: Router */
+    private router: Router
   ) {
     this.form = this.fb.group({
       full_name: ['', [Validators.required]],
@@ -36,7 +36,9 @@ export class RegisterPage {
     this.loading = true;
     this.auth.register(this.form.value).subscribe({
       next: () => {
+        this.auth.login(this.form.value).subscribe();
         this.loading = false;
+        this.router.navigate(['../login']);
       },
       error: (err) => {
         this.loading = false;

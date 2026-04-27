@@ -21,7 +21,7 @@ export class LoginPage {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    /* private router: Router */
+    private router: Router
   ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -41,9 +41,9 @@ export class LoginPage {
     this.auth.login(this.form.value).subscribe({
       next: (res) => {
         console.log(res.token);
-        /* this.auth.saveToken(res.token);
+        this.auth.saveToken(res.token);
         this.loading = false;
-        this.router.navigate(['/']); */
+        this.router.navigate(['/']); 
       },
       error: (err) => {
         this.loading = false;
