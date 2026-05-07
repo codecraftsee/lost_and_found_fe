@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
-import { Form, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component,DestroyRef, inject } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AUTH_ROUTE, AuthRoutes } from '../../../../shared/constants/auth/routes/routes.constants';
 
 @Component({
   selector: 'app-reset-password',
@@ -9,8 +11,11 @@ import { AuthService } from '../../../../core/services/auth';
   templateUrl: './reset-password.page.html',
 })
 export class ResetPasswordPage {
+  destroyRef = inject(DestroyRef);
   form: FormGroup;
   loading = false;
+  errorMsg = '';
+  payload : any;
 
   constructor(
     private fb: FormBuilder,
@@ -18,8 +23,8 @@ export class ResetPasswordPage {
     private router: Router
   ) {
     this.form = this.fb.group({
-      current_password: ['', [Validators.required]],
-      new_password: ['', [Validators.required]],
+      current_password: new FormControl('', {validators: [Validators.required], nonNullable: true}),
+      new_password: new FormControl('', {validators: [Validators.required], nonNullable: true}),
     });
   }
   onSubmit() {
@@ -29,15 +34,31 @@ export class ResetPasswordPage {
     }
 
     this.loading = true;
+    this.payload = this.form.getRawValue();
 
-    this.auth.changePassword(this.form.value).subscribe({
+    this.auth.changePassword(this.payload).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => {
         this.loading = false;
-        this.router.navigate(['/auth/login']);
+        this.router.navigate([`/${AUTH_ROUTE}/${AuthRoutes.LOGIN}`]);
       },
       error: (err) => {
+        switch (err.status) {
+          case 400:
+            this.errorMsg = 'Invalid email or password.';
+            break;
+          case 401:
+            this.errorMsg = 'Unauthorized. Please check your credentials.';
+            break;
+          case 409:
+            this.errorMsg = 'Conflict. This email is already in use.';
+            break;
+          case 500:
+            this.errorMsg = 'Server error. Please try again later.';
+            break;
+          default:
+            this.errorMsg = 'An unexpected error occurred. Please try again.';
+        }
         this.loading = false;
-        console.log(err);
       }
     });
 

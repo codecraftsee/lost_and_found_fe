@@ -1,9 +1,11 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { AUTH_ROUTE, AuthRoutes } from '../../../shared/constants/auth/routes/routes.constants';
+import { ACCESS_TOKEN } from '../../../shared/constants/auth/token/token.constant';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem(ACCESS_TOKEN);
 
-  if (req.url.includes('/auth/login') || req.url.includes('/auth/register')) {
+  if (req.url.includes(`/${AUTH_ROUTE}/${AuthRoutes.LOGIN}`) || req.url.includes(`/${AUTH_ROUTE}/${AuthRoutes.REGISTER}`)) {
     return next(req);
   }
 
